@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оценка сайта</title>
+    <style>
+        /* Стили для рейтинга */
+        .rating-wrapper {
+            margin: 3px auto;
+            text-align: center;
+        }
+        
+        .stars-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .star {
+            font-size: 32px;
+            color: #ccc;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .star:hover, .star.active {
+            color: gold;
+        }
+        
+        .submit-rating {
+            padding: 8px 16px;
+            background-color: #020086;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+        
+        .submit-rating:hover {
+            background-color: #00dabd;
+        }
+        
+        .rating-text {
+            margin-top: 10px;
+            font-size: 14px;
+            color: white;
+        }
+        .counter-iframe {
+            width: 100%;
+            border: none;
+            height: 180px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="rating-wrapper">
+        <div class="stars-wrapper">
+            <div class="star" data-value="1">★</div>
+            <div class="star" data-value="2">★</div>
+            <div class="star" data-value="3">★</div>
+            <div class="star" data-value="4">★</div>
+            <div class="star" data-value="5">★</div>
+        </div>
+        <button class="submit-rating" id="submitRating">Отправить</button>
+        <div class="rating-text" id="ratingText">Оцените наш сайт</div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const stars = document.querySelectorAll('.star');
+            const submitBtn = document.getElementById('submitRating');
+            const ratingText = document.getElementById('ratingText');
+            
+            let selectedRating = 0;
+            
+            // Выбор звезды
+            stars.forEach(star => {
+                star.addEventListener('click', function() {
+                    const value = parseInt(this.getAttribute('data-value'));
+                    selectedRating = value;
+                    
+                    // Обновляем текст в зависимости от оценки
+                    const ratingMessages = [
+                        "",
+                        "Плохо",
+                        "Удовлетворительно",
+                        "Хорошо",
+                        "Отлично",
+                        "Превосходно"
+                    ];
+                    ratingText.textContent = ratingMessages[value];
+                    
+                    // Подсветка выбранных звёзд
+                    stars.forEach((s, i) => {
+                        if (i < value) {
+                            s.classList.add('active');
+                        } else {
+                            s.classList.remove('active');
+                        }
+                    });
+                });
+                
+                // Эффект при наведении
+                star.addEventListener('mouseover', function() {
+                    const value = parseInt(this.getAttribute('data-value'));
+                    
+                    stars.forEach((s, i) => {
+                        if (i < value) {
+                            s.style.color = 'gold';
+                        } else {
+                            s.style.color = '#ccc';
+                        }
+                    });
+                });
+                
+                // Возврат к выбранному значению при уходе мыши
+                star.addEventListener('mouseout', function() {
+                    stars.forEach((s, i) => {
+                        if (i < selectedRating) {
+                            s.style.color = 'gold';
+                            s.classList.add('active');
+                        } else {
+                            s.style.color = '#ccc';
+                            s.classList.remove('active');
+                        }
+                    });
+                });
+            });
+            
+            // Отправка оценки
+            submitBtn.addEventListener('click', function() {
+                if (selectedRating > 0) {
+                    alert(`Спасибо за вашу оценку: ${selectedRating} звезд(ы)!`);
+                    
+                    // Сброс оценки после отправки (опционально)
+                    stars.forEach(star => {
+                        star.style.color = '#ccc';
+                        star.classList.remove('active');
+                    });
+                    ratingText.textContent = "Спасибо за оценку!";
+                    selectedRating = 0;
+                } else {
+                    alert('Пожалуйста, выберите количество звёзд перед отправкой.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

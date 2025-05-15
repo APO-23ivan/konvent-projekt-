@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Аудио Конвертер</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #E3F2FD;
+            text-align: center;
+        }
+        .header {
+            background-color: #2196F3;
+            padding: 15px;
+            color: white;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-right: 30px;
+        }
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        .nav {
+            display: flex;
+            gap: 20px;
+            margin-left: 15px;
+        }
+        .nav a {
+            text-decoration: none;
+            color: #FFF;
+            font-size: 18px;
+            padding: 10px 15px;
+            border-radius: 5px;
+            background-color: #1976D2;
+        }
+        .nav a:hover {
+            background-color: #64B5F6;
+        }
+        .auth-buttons {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        .auth-buttons button {
+            background-color: #1565C0;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .auth-buttons button:hover {
+            background-color: #64B5F6;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            margin: 15% auto;
+            text-align: center;
+        }
+        .close {
+            color: red;
+            float: right;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .converter-container {
+            margin: 50px auto;
+            width: 60%;
+            background: linear-gradient(to bottom, #dce1e6, #aeb4bb);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: left;
+        }
+        .step {
+            font-size: 20px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .button {
+            display: block;
+            width: 90%;
+            margin: 10px auto;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(to bottom, #5aa2e8, #0070c9);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+        }
+        .button:hover {
+            background: linear-gradient(to bottom, #6bb5ff, #0088ff);
+        }
+        .file-types button, .extra-options button {
+            padding: 10px 15px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            background: #c5c9ce;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        .file-types button:hover, .extra-options button:hover {
+            background: #a5a9ae;
+        }
+        .file-types button.active {
+            background: #4a90e2;
+            color: white;
+        }
+      .quality-slider {
+    text-align: center;
+    margin: 20px 0;
+        }
+        .slider-container {
+            display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+        }
+      .slider {
+    width: 100%;
+        }
+        .extra-settings {
+            display: none;
+            background: #555;
+            padding: 15px;
+            border-radius: 5px;
+            color: white;
+            margin-top: 15px;
+        }
+        .info-section {
+            margin: 50px auto;
+            width: 70%;
+            text-align: left;
+            font-size: 18px;
+        }
+        .info-section h2 {
+            color: #1976D2;
+        }
+        .info-block {
+            margin-bottom: 20px;
+        }
+        .footer {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .footer a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #1976D2;
+        }
+
+        .nav a.gallery-btn {
+            background-color: #1976D2; /* Зеленый цвет для выделения */
+        }
+
+            .nav a.gallery-btn:hover {
+                background-color: #64B5F6; /* Светло-зеленый при наведении */
+            }
+        .nav a.contact-btn {
+            background-color: #1976D2;
+        }
+
+            .nav a.contact-btn:hover {
+                background-color: #64B5F6;
+            }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <img src="image/logo.png" alt="Логотип">
+            KonvenT
+            <div class="nav">
+                <a href="index.html">Главная</a>
+                <a href="audio_converter.html">Аудио Конвертер</a>
+                <a href="video_converter.html">Видео Конвертер</a>
+                <a href="image_converter.html">Конвертер Изображений</a>
+                <a href="gallery.html" class="gallery-btn">Галерея</a>
+                <a href="contact.html" class="contact-btn">Связь</a>
+            </div>
+        </div>
+    </div>
+        <div class="auth-buttons">
+            <button onclick="openModal('loginModal')">Вход</button>
+            <button onclick="openModal('registerModal')">Регистрация</button>
+        </div>
+    </div>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <h2>Вход</h2>
+            <input type="text" placeholder="Логин"><br><br>
+            <input type="password" placeholder="Пароль"><br><br>
+            <button>Войти</button>
+        </div>
+    </div>
+
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('registerModal')">&times;</span>
+            <h2>Регистрация</h2>
+            <input type="text" placeholder="Имя"><br><br>
+            <input type="email" placeholder="Email"><br><br>
+            <input type="password" placeholder="Пароль"><br><br>
+            <button>Зарегистрироваться</button>
+        </div>
+    </div>
+
+    <script>
+        function openModal(id) {
+            document.getElementById(id).style.display = 'block';
+        }
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+    </script>
+
+    <div class="converter-container">
+        <div class="step">1. Открыть файлы</div>
+        <button class="button">Открыть файлы</button>
+        <div class="file-types">
+            <div class="step">2. Выберите формат</div>
+            <button class="active" onclick="setActive(this)">mp3</button>
+            <button onclick="setActive(this)">wav</button>
+            <button onclick="setActive(this)">Рингтон для iPhone</button>
+            <button onclick="setActive(this)">m4a</button>
+            <button onclick="setActive(this)">flac</button>
+            <button onclick="setActive(this)">ogg</button>
+            <button onclick="setActive(this)">ещё</button>
+        </div>
+        <div class="quality-slider">
+    <div class="step">Качество</div>
+    <div class="slider-container">
+        <span>Эконом 64 kbps</span>
+        <input type="range" class="slider" min="64" max="320" step="64">
+        <span>Лучшее 320 kbps</span>
+    </div>
+  </div>
+        <div class="extra-options">
+            <button onclick="toggleSettings()">Дополнительно</button>
+            <button>Информация о треке</button>
+        </div>
+        <div class="extra-settings" id="extra-settings">
+            <div>
+                <label>Битрейт:</label>
+                <input type="radio" name="bitrate" checked> Постоянный
+                <input type="radio" name="bitrate"> Переменный
+                <select>
+                    <option>128 kbps</option>
+                    <option>192 kbps</option>
+                    <option>320 kbps</option>
+                </select>
+            </div>
+            <div>
+                <label>Частота:</label>
+                <select>
+                    <option>44100 Hz</option>
+                    <option>48000 Hz</option>
+                    <option>96000 Hz</option>
+                </select>
+            </div>
+            <div>
+                <label>Каналы:</label>
+                <select>
+                    <option>1</option>
+                    <option>2</option>
+                </select>
+            </div>
+            <div>
+                <input type="checkbox"> Плавное начало
+                <input type="checkbox"> Плавное затухание
+                <input type="checkbox"> Реверс
+            </div>
+        </div>
+        <div class="step">3. Конвертировать</div>
+        <button class="button">Конвертировать</button>
+    </div>
+    <script>
+        function toggleSettings() {
+            var settings = document.getElementById('extra-settings');
+            settings.style.display = settings.style.display === 'none' ? 'block' : 'none';
+        }
+        function setActive(button) {
+            document.querySelectorAll('.file-types button').forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+        }
+    </script>
+    <div class="info-section">
+        <h2>Возможности нашего аудиоконвертера</h2>
+        <div class="info-block"><strong>Поддержка всех форматов:</strong> Конвертируйте файлы в mp3, wav, flac, ogg, m4a и другие.</div>
+        <div class="info-block"><strong>Пакетное конвертирование:</strong> Загружайте несколько файлов и конвертируйте их одновременно.</div>
+        <div class="info-block"><strong>Безопасность:</strong> Ваши файлы автоматически удаляются после обработки.</div>
+        <div class="info-block"><strong>Работает в браузере:</strong> Не требует установки, конвертируйте прямо в вашем браузере.</div>
+        <div class="info-block"><strong>Расширенные настройки:</strong> Выбирайте качество, битрейт, частоту и другие параметры.</div>
+    </div>
+    <div class="footer">
+        <h2>О нашем сайте</h2>
+        <p>Наш онлайн-конвертер создан для быстрого и удобного преобразования различных форматов файлов.</p>
+        <p>Поддерживаются документы, изображения, аудио и видео.</p>
+        <h3>Связь с нами</h3>
+        <p>Email: <a href="mailto:ivan.snitsraenko@gmail.com">ivan.snitsraenko@gmail.com</a></p>
+        <p>Телефон: <a href="tel:+77070014823">+7 (707) 001 48 23</a></p>
+        <p>&copy; 2025 Онлайн Конвертер. Все права защищены.</p>
+    </div>
+
+</body>
+</html>

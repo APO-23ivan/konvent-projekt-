@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кнопка со счетчиком</title>
+    <style>
+        .counter-section {
+            margin: 0;
+            padding: 20px;
+            background-color: #90CAF9;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .change-text-btn {
+            background-color: #1976D2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+            .change-text-btn:hover {
+                background-color: #0D47A1;
+            }
+
+        .counter {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="counter-section">
+        <h1 id="changeable-text">Выберите нужный конвертер</h1>
+        <button class="change-text-btn" onclick="changeText()">Изменить текст</button>
+        <div class="counter">Счетчик: <span id="click-counter">0</span></div>
+    </div>
+
+    <script>
+        let counter = 0;
+        const texts = [
+            "Выберите нужный конвертер",
+            "Преобразуйте ваши файлы легко",
+            "Быстрое конвертирование в один клик",
+            "Поддерживаем множество форматов",
+            "Попробуйте все наши инструменты"
+        ];
+
+        function changeText() {
+            counter++;
+            document.getElementById('click-counter').textContent = counter;
+
+            // Получаем случайный индекс для выбора текста
+            const randomIndex = Math.floor(Math.random() * texts.length);
+            document.getElementById('changeable-text').textContent = texts[randomIndex];
+
+            // Отправляем сообщение родительскому окну с обновленным счетчиком
+            window.parent.postMessage({
+                type: 'counterUpdate',
+                value: counter
+            }, '*');
+        }
+    </script>
+</body>
+</html>
